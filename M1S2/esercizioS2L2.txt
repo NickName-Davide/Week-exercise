@@ -1,0 +1,60 @@
+import datetime
+def assistente_virtuale(comando):
+    if comando == "Qual è la data di oggi?":
+        oggi = datetime.datetoday() # manca il punto tra date e today(datetime.date.today)
+        risposta = "La data di oggi è " + oggi.strftime("%d/%m/%Y")
+    elif comando == "Che ore sono?":
+        ora_attuale = datetime.datetime.now().time() #le librerie.now e .time sono ridondanti, in questo caso non si tratta di un vero errore ma di un ottimizzazione (ora_attuale = datetime.datetime.now())
+        risposta = "L'ora attuale è " + ora_attuale.strftime("%H:%M")
+    elif comando == "Come ti chiami?":
+        risposta = "Mi chiamo Assistente Virtuale"
+    else:
+        risposta = "Non ho capito la tua domanda."
+    return risposta
+while True # mancano i duepunti dopo il True(while True:)
+    comando_utente = input("Cosa vuoi sapere? ")
+    if comando_utente.lower() == "esci":
+        print("Arrivederci!")
+        break
+    else:
+        print(assistente_virtuale(comando_utente))
+
+
+# il programma è un assistente virtuale che restituisce all'utente informazioni come data orario ed il proprio nome;
+
+# lato interfaccia utente vi sono parecchie implementazioni da attuare:
+	1 L'utente non vede le scelte possibili --> la soluzione potrebbe essere implementare un menù a schermo con le opzioni di scelta disponibili
+	2 il sistema è key sensitive ed ha troppi margini di errore dell'utente, si consiglia di implementare lo stesso eliminando il key sensitive, cambiando i comandi da stringhe complesse a parole chiave e splittando le stringhe inserite
+	3 un esempio di codice più flessibile ed aggiornabile potrebbe essere:
+
+	import datetime
+
+	PAROLE_DATA = ["data", "oggi", "giorno", "calendario"]
+	PAROLE_ORA = ["ora", "ore", "orario", "che ora è"]
+	PAROLE_NOME = ["chiami", "nome", "identità", "chi sei"]
+
+	def assistente_virtuale(comando):
+    	comando = comando.lower().strip()
+    
+
+    	if any(parola in comando for parola in PAROLE_DATA):
+        	oggi = datetime.date.today()
+        	return f"Oggi è {oggi.strftime('%d/%m/%Y')}"
+    
+    	elif any(parola in comando for parola in PAROLE_ORA):
+        	ora_attuale = datetime.datetime.now()
+        	return f"L'ora attuale è {ora_attuale.strftime('%H:%M')}"
+    
+    	elif any(parola in comando for parola in PAROLE_NOME):
+        	return "Mi chiamo Assistente Virtuale"
+    
+    	else:
+        	risposta = "Non ho capito la tua domanda."
+    	return risposta
+	while True:
+    	comando_utente = input("\nCosa vuoi sapere? (Scrivi 'esci' per uscire) ")
+    	if comando_utente.lower().strip() == "esci":
+        	print("Arrivederci!")
+        	break
+    	else:
+        	print(assistente_virtuale(comando_utente))
